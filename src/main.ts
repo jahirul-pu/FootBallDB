@@ -11,8 +11,6 @@ import { GlobalExceptionFilter } from './common/filters/global-exception.filter'
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
-import { RolesGuard } from './common/guards/roles.guard';
-import { PermissionsGuard } from './common/guards/permissions.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -44,11 +42,7 @@ async function bootstrap() {
 
   // Global Security Guards
   const reflector = app.get(Reflector);
-  app.useGlobalGuards(
-    new JwtAuthGuard(reflector),
-    new RolesGuard(reflector),
-    new PermissionsGuard(reflector)
-  );
+  app.useGlobalGuards(new JwtAuthGuard(reflector));
 
   const config = new DocumentBuilder()
     .setTitle('FootballDB API')

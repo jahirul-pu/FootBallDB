@@ -7,9 +7,12 @@ import { UserResponseDto } from './dto/user-response.dto';
 import { AssignRoleDto } from './dto/assign-role.dto';
 import { ChangePasswordAdminDto } from './dto/change-password-admin.dto';
 import { Roles } from '../../common/decorators/roles.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
+import { UseGuards } from '@nestjs/common';
 
 @ApiTags('Users')
 @ApiBearerAuth()
+@UseGuards(RolesGuard)
 @Roles('Administrator') // Entire controller restricted to Admins
 @Controller('users')
 export class UsersController {

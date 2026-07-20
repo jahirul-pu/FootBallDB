@@ -1,10 +1,119 @@
 @import 'tailwindcss';
 
 /* ============================================================
-   Design Tokens — CSS Custom Properties
+   DESIGN TOKENS — FootballDB Premium Design System
+   Inspired by Linear, Vercel, Stripe
    ============================================================ */
+
+@theme {
+  /* ------------------------------------------------------------
+     Typography Scale (Inter / Geist)
+     ------------------------------------------------------------ */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* ------------------------------------------------------------
+     Tailwind v4 Semantic Color Mapping (Theme)
+     ------------------------------------------------------------ */
+  --color-background: var(--bg-base);
+  --color-foreground: var(--fg-primary);
+
+  --color-card: var(--bg-surface);
+  --color-card-foreground: var(--fg-primary);
+
+  --color-popover: var(--bg-surface);
+  --color-popover-foreground: var(--fg-primary);
+
+  --color-primary: var(--primary-base);
+  --color-primary-foreground: var(--primary-fg);
+  --color-primary-hover: var(--primary-hover);
+
+  --color-secondary: var(--bg-subtle);
+  --color-secondary-foreground: var(--fg-secondary);
+
+  --color-muted: var(--bg-subtle);
+  --color-muted-foreground: var(--fg-muted);
+
+  --color-accent: var(--accent-base);
+  --color-accent-foreground: var(--accent-fg);
+  --color-accent-subtle: var(--accent-subtle);
+
+  --color-destructive: var(--danger-base);
+  --color-destructive-foreground: var(--danger-fg);
+
+  --color-success: var(--success-base);
+  --color-success-foreground: var(--success-fg);
+
+  --color-warning: var(--warning-base);
+  --color-warning-foreground: var(--warning-fg);
+
+  --color-info: var(--info-base);
+  --color-info-foreground: var(--info-fg);
+
+  --color-border: var(--border-default);
+  --color-input: var(--border-default);
+  --color-ring: var(--ring-color);
+
+  /* ------------------------------------------------------------
+     Spacing & Layout Scales
+     ------------------------------------------------------------ */
+  --spacing-container-sm: 640px;
+  --spacing-container-md: 768px;
+  --spacing-container-lg: 1024px;
+  --spacing-container-xl: 1280px;
+  --spacing-container-2xl: 1400px;
+
+  --spacing-sidebar-w: 240px;
+  --spacing-sidebar-w-collapsed: 64px;
+
+  /* ------------------------------------------------------------
+     Border Radius Scale
+     ------------------------------------------------------------ */
+  --radius-none: 0;
+  --radius-sm: 0.125rem; /* 2px */
+  --radius-md: 0.375rem; /* 6px - standard components */
+  --radius-lg: 0.5rem; /* 8px - cards */
+  --radius-xl: 0.75rem; /* 12px - modals */
+  --radius-2xl: 1rem; /* 16px */
+  --radius-3xl: 1.5rem; /* 24px */
+  --radius-full: 9999px;
+
+  /* ------------------------------------------------------------
+     Elevation & Shadows (Refined, crisp shadows)
+     ------------------------------------------------------------ */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.08);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.08);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.08);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  --shadow-elevation-modal: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* ------------------------------------------------------------
+     Z-Index System
+     ------------------------------------------------------------ */
+  --z-base: 0;
+  --z-elevated: 10;
+  --z-dropdown: 50;
+  --z-sticky: 100;
+  --z-overlay: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+  --z-tooltip: 500;
+}
+
+/* ============================================================
+   Semantic Color System
+   ============================================================ */
+
 :root {
-  /* Neutral scale */
+  /* --- Base Primitives --- */
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+
+  /* Neutral scale (Zinc based, slightly cooler for tech feel) */
   --neutral-50: #fafafa;
   --neutral-100: #f4f4f5;
   --neutral-200: #e4e4e7;
@@ -17,95 +126,206 @@
   --neutral-900: #18181b;
   --neutral-950: #09090b;
 
-  /* Primary — electric indigo */
-  --primary-400: #818cf8;
-  --primary-500: #6366f1;
-  --primary-600: #4f46e5;
-  --primary-700: #4338ca;
-
-  /* Accent — emerald */
-  --accent-400: #34d399;
-  --accent-500: #10b981;
-  --accent-600: #059669;
-
-  /* Danger — rose */
-  --danger-400: #fb7185;
-  --danger-500: #f43f5e;
-
-  /* Warning — amber */
-  --warning-400: #fbbf24;
-  --warning-500: #f59e0b;
-
-  /* Elevation */
-  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-
-  /* Semantic — Light Mode */
+  /* --- LIGHT THEME (Default) --- */
   --bg-base: var(--neutral-50);
   --bg-subtle: var(--neutral-100);
-  --bg-surface: #ffffff;
-  --bg-overlay: var(--neutral-200);
+  --bg-surface: var(--white);
+  --bg-overlay: rgb(255 255 255 / 0.8);
+  --bg-tooltip: var(--neutral-900);
+
+  --fg-primary: var(--neutral-950);
+  --fg-secondary: var(--neutral-600);
+  --fg-muted: var(--neutral-500);
+  --fg-inverse: var(--white);
+
+  --border-subtle: var(--neutral-100);
   --border-default: var(--neutral-200);
   --border-strong: var(--neutral-300);
-  --text-primary: var(--neutral-900);
-  --text-secondary: var(--neutral-600);
-  --text-muted: var(--neutral-400);
+  --border-hover: var(--neutral-400);
+
+  /* Brand Colors (Electric Indigo) */
+  --primary-base: #4f46e5;
+  --primary-hover: #4338ca;
+  --primary-active: #3730a3;
+  --primary-subtle: #e0e7ff;
+  --primary-fg: var(--white);
+
+  /* Accent (Emerald) */
+  --accent-base: #10b981;
+  --accent-hover: #059669;
+  --accent-subtle: #d1fae5;
+  --accent-fg: var(--white);
+
+  /* Semantic Feedback */
+  --success-base: #10b981;
+  --success-subtle: #d1fae5;
+  --success-fg: #064e3b;
+
+  --warning-base: #f59e0b;
+  --warning-subtle: #fef3c7;
+  --warning-fg: #78350f;
+
+  --danger-base: #ef4444;
+  --danger-subtle: #fee2e2;
+  --danger-fg: #7f1d1d;
+
+  --info-base: #3b82f6;
+  --info-subtle: #dbeafe;
+  --info-fg: #1e3a8a;
+
+  /* Interactive States */
+  --ring-color: rgb(79 70 229 / 0.5); /* Primary */
+  --ring-offset-color: var(--bg-base);
+  --selection-bg: #c7d2fe; /* Indigo 200 */
+  --selection-fg: var(--neutral-900);
+
+  /* --- Football Specific Tokens (Light) --- */
+  --fb-match-win: #10b981;
+  --fb-match-draw: #94a3b8;
+  --fb-match-loss: #ef4444;
+
+  --fb-team-home-bg: var(--neutral-100);
+  --fb-team-home-fg: var(--neutral-900);
+  --fb-team-away-bg: var(--neutral-50);
+  --fb-team-away-fg: var(--neutral-600);
+
+  --fb-stat-excellent: #10b981;
+  --fb-stat-good: #84cc16;
+  --fb-stat-average: #facc15;
+  --fb-stat-poor: #f97316;
+  --fb-stat-terrible: #ef4444;
+
+  --fb-card-yellow: #facc15;
+  --fb-card-red: #ef4444;
+
+  --fb-pitch-grass: #15803d;
+  --fb-pitch-lines: rgb(255 255 255 / 0.7);
 }
 
+/* --- DARK THEME --- */
 [data-theme='dark'] {
   --bg-base: var(--neutral-950);
   --bg-subtle: var(--neutral-900);
-  --bg-surface: var(--neutral-900);
-  --bg-overlay: var(--neutral-800);
+  --bg-surface: var(
+    --neutral-900
+  ); /* In dark mode, surface often matches subtle but uses border to pop */
+  --bg-overlay: rgb(9 9 11 / 0.8);
+  --bg-tooltip: var(--neutral-100);
+
+  --fg-primary: var(--neutral-50);
+  --fg-secondary: var(--neutral-400);
+  --fg-muted: var(--neutral-500);
+  --fg-inverse: var(--neutral-950);
+
+  --border-subtle: var(--neutral-800);
   --border-default: var(--neutral-800);
   --border-strong: var(--neutral-700);
-  --text-primary: var(--neutral-50);
-  --text-secondary: var(--neutral-400);
-  --text-muted: var(--neutral-600);
+  --border-hover: var(--neutral-600);
 
-  /* Dark mode elevation — border-based */
-  --shadow-xs: 0 0 0 1px var(--border-default);
-  --shadow-sm: 0 0 0 1px var(--border-default);
-  --shadow-md: 0 0 0 1px var(--border-default);
+  /* Brand Colors */
+  --primary-base: #6366f1; /* Lighter indigo for dark mode */
+  --primary-hover: #818cf8;
+  --primary-active: #4f46e5;
+  --primary-subtle: rgb(99 102 241 / 0.15);
+  --primary-fg: var(--white);
+
+  /* Accent */
+  --accent-base: #34d399; /* Lighter emerald */
+  --accent-hover: #6ee7b7;
+  --accent-subtle: rgb(16 185 129 / 0.15);
+  --accent-fg: var(--neutral-950);
+
+  /* Semantic Feedback */
+  --success-base: #34d399;
+  --success-subtle: rgb(16 185 129 / 0.15);
+  --success-fg: #a7f3d0;
+
+  --warning-base: #fbbf24;
+  --warning-subtle: rgb(245 158 11 / 0.15);
+  --warning-fg: #fde68a;
+
+  --danger-base: #f87171;
+  --danger-subtle: rgb(239 68 68 / 0.15);
+  --danger-fg: #fecaca;
+
+  --info-base: #60a5fa;
+  --info-subtle: rgb(59 130 246 / 0.15);
+  --info-fg: #bfdbfe;
+
+  /* Interactive States */
+  --ring-color: rgb(99 102 241 / 0.6);
+  --ring-offset-color: var(--bg-base);
+  --selection-bg: rgb(99 102 241 / 0.3);
+  --selection-fg: var(--neutral-50);
+
+  /* --- Football Specific Tokens (Dark) --- */
+  --fb-match-win: #34d399;
+  --fb-match-draw: #94a3b8;
+  --fb-match-loss: #f87171;
+
+  --fb-team-home-bg: var(--neutral-800);
+  --fb-team-home-fg: var(--neutral-100);
+  --fb-team-away-bg: var(--neutral-900);
+  --fb-team-away-fg: var(--neutral-400);
+
+  --fb-stat-excellent: #34d399;
+  --fb-stat-good: #a3e635;
+  --fb-stat-average: #fde047;
+  --fb-stat-poor: #fb923c;
+  --fb-stat-terrible: #f87171;
+
+  --fb-card-yellow: #fde047;
+  --fb-card-red: #f87171;
+
+  --fb-pitch-grass: #14532d;
+  --fb-pitch-lines: rgb(255 255 255 / 0.4);
 }
 
 /* ============================================================
-   Base Reset & Global Styles
+   Global Element Resets & Styles
    ============================================================ */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  border-color: var(--border-default); /* Default border color */
+}
+
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-fg);
 }
 
 html {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
   background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-geist-sans, system-ui, sans-serif);
-  font-size: 14px;
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  font-size: 0.875rem; /* 14px base for dense data UI */
   line-height: 1.5;
+  overflow-x: hidden;
 }
 
-/* ============================================================
-   Focus Ring — WCAG 2.2 AA
-   ============================================================ */
+/* Crisp rendering for icons */
+svg {
+  shape-rendering: geometricPrecision;
+}
+
+/* Modern focus ring */
 :focus-visible {
-  outline: 2px solid var(--primary-500);
+  outline: 2px solid var(--ring-color);
   outline-offset: 2px;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
 }
 
-/* ============================================================
-   Scrollbar — subtle styling
-   ============================================================ */
+/* Custom minimal scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -118,5 +338,5 @@ body {
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--text-muted);
+  background: var(--fg-muted);
 }

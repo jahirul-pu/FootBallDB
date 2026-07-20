@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  web:
+    build:
+      context: .
+      target: deps
+    command: npm run dev
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - '3001:3001'
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://backend:3000
+    depends_on:
+      - backend
+    networks:
+      - footballdb
+
+networks:
+  footballdb:
+    external: true

@@ -1,0 +1,122 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Design Tokens — CSS Custom Properties
+   ============================================================ */
+:root {
+  /* Neutral scale */
+  --neutral-50: #fafafa;
+  --neutral-100: #f4f4f5;
+  --neutral-200: #e4e4e7;
+  --neutral-300: #d4d4d8;
+  --neutral-400: #a1a1aa;
+  --neutral-500: #71717a;
+  --neutral-600: #52525b;
+  --neutral-700: #3f3f46;
+  --neutral-800: #27272a;
+  --neutral-900: #18181b;
+  --neutral-950: #09090b;
+
+  /* Primary — electric indigo */
+  --primary-400: #818cf8;
+  --primary-500: #6366f1;
+  --primary-600: #4f46e5;
+  --primary-700: #4338ca;
+
+  /* Accent — emerald */
+  --accent-400: #34d399;
+  --accent-500: #10b981;
+  --accent-600: #059669;
+
+  /* Danger — rose */
+  --danger-400: #fb7185;
+  --danger-500: #f43f5e;
+
+  /* Warning — amber */
+  --warning-400: #fbbf24;
+  --warning-500: #f59e0b;
+
+  /* Elevation */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+  /* Semantic — Light Mode */
+  --bg-base: var(--neutral-50);
+  --bg-subtle: var(--neutral-100);
+  --bg-surface: #ffffff;
+  --bg-overlay: var(--neutral-200);
+  --border-default: var(--neutral-200);
+  --border-strong: var(--neutral-300);
+  --text-primary: var(--neutral-900);
+  --text-secondary: var(--neutral-600);
+  --text-muted: var(--neutral-400);
+}
+
+[data-theme='dark'] {
+  --bg-base: var(--neutral-950);
+  --bg-subtle: var(--neutral-900);
+  --bg-surface: var(--neutral-900);
+  --bg-overlay: var(--neutral-800);
+  --border-default: var(--neutral-800);
+  --border-strong: var(--neutral-700);
+  --text-primary: var(--neutral-50);
+  --text-secondary: var(--neutral-400);
+  --text-muted: var(--neutral-600);
+
+  /* Dark mode elevation — border-based */
+  --shadow-xs: 0 0 0 1px var(--border-default);
+  --shadow-sm: 0 0 0 1px var(--border-default);
+  --shadow-md: 0 0 0 1px var(--border-default);
+}
+
+/* ============================================================
+   Base Reset & Global Styles
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans, system-ui, sans-serif);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Focus Ring — WCAG 2.2 AA
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--primary-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ============================================================
+   Scrollbar — subtle styling
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}

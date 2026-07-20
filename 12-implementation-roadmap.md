@@ -318,18 +318,18 @@ Project Bootstrap (Ph 1)
 
 This checklist must be executed top-to-bottom. Do not skip phases or begin Phase 5 before Phase 4 is complete.
 
-- [ ] **M1: FOUNDATION**
+- [x] **M1: FOUNDATION**
   - [x] P1.1: Project Bootstrap (Scaffolding complete)
-  - [ ] P2.1: Implement `UsersModule` (CRUD for internal users)
-  - [ ] P2.2: Implement `AuthModule` (JWT generation/validation)
-  - [ ] P2.3: Implement Global Guards (`JwtAuthGuard`, `RolesGuard`)
-  - [ ] P3.1: Implement `BaseRepository` abstract class
-  - [ ] P3.2: Implement standard Pagination, Filtering, and Sorting DTOs/Utils
+  - [x] P2.1: Implement `UsersModule` (CRUD for internal users)
+  - [x] P2.2: Implement `AuthModule` (JWT generation/validation)
+  - [x] P2.3: Implement Global Guards (`JwtAuthGuard`, `RolesGuard`)
+  - [x] P3.1: Implement `BaseRepository` abstract class
+  - [x] P3.2: Implement standard Pagination, Filtering, and Sorting DTOs/Utils
 
 - [ ] **M2: CORE DOMAIN**
-  - [ ] P4.1: `GeopoliticalModule` & `OrganizationsModule`
+  - [x] P4.1: `GeopoliticalModule` & `OrganizationsModule`
   - [ ] P4.2: `VenuesModule`
-  - [ ] P4.3: `PersonsModule` (Read endpoints using `vw_player_profile`)
+  - [x] P4.3: `PersonsModule` (Read endpoints using `vw_player_profile`)
   - [ ] P4.4: `TeamsModule` (Read endpoints using `vw_club_profile`)
   - [ ] P4.5: `CompetitionsModule` & `SeasonsModule`
   - [ ] P4.6: `StagesModule`

@@ -1,0 +1,13 @@
+export class SlugUtil {
+  static generate(text: string): string {
+    return text
+      .toString()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/[^\w\-]+/g, '')
+      .replace(/\-\-+/g, '-');
+  }
+}

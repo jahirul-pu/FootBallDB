@@ -6,6 +6,7 @@ export interface ContentLayoutProps {
   header?: React.ReactNode;
   className?: string;
   containerSize?: 'default' | 'narrow' | 'wide' | 'fluid';
+  noPadding?: boolean;
 }
 
 export function ContentLayout({
@@ -13,6 +14,7 @@ export function ContentLayout({
   header,
   className,
   containerSize = 'default',
+  noPadding = false,
 }: ContentLayoutProps) {
   const containerClasses = {
     default: 'max-w-7xl',
@@ -24,7 +26,13 @@ export function ContentLayout({
   return (
     <div className={cn('flex h-full flex-col', className)}>
       {header && <div className="shrink-0">{header}</div>}
-      <div className={cn('mx-auto w-full flex-1 p-6 md:p-8', containerClasses[containerSize])}>
+      <div
+        className={cn(
+          'mx-auto w-full flex-1',
+          !noPadding && 'p-6 md:p-8',
+          containerClasses[containerSize],
+        )}
+      >
         {children}
       </div>
     </div>

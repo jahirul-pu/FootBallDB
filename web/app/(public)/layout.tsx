@@ -1,0 +1,9 @@
+/**
+ * (public) route group layout — wraps all public/marketing pages.
+ * No auth required.
+ */
+import { PublicLayout } from '@/components/layout/public-layout';
+
+export default function PublicGroupLayout({ children }: { children: React.ReactNode }) {
+  return <PublicLayout>{children}</PublicLayout>;
+}

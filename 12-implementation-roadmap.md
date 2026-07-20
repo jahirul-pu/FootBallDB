@@ -330,7 +330,7 @@ This checklist must be executed top-to-bottom. Do not skip phases or begin Phase
   - [x] P4.1: `GeopoliticalModule` & `OrganizationsModule`
   - [ ] P4.2: `VenuesModule`
   - [x] P4.3: `PersonsModule` (Read endpoints using `vw_player_profile`)
-  - [ ] P4.4: `TeamsModule` (Read endpoints using `vw_club_profile`)
+  - [x] P4.4: `TeamsModule` (Read endpoints using `vw_club_profile`)
   - [ ] P4.5: `CompetitionsModule` & `SeasonsModule`
   - [ ] P4.6: `StagesModule`
 

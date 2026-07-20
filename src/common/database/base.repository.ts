@@ -1,4 +1,4 @@
-import { PrismaService } from './prisma.service';
+import { PrismaService } from '../../database/prisma.service';
 
 /**
  * Generic Base Repository providing standard CRUD capabilities via Prisma.

@@ -12,6 +12,7 @@ enum GeopoliticalType {
   Territory
   HistoricalState
   AdministrativeRegion
+
   @@map("geopolitical_type")
 }
 
@@ -19,12 +20,14 @@ enum OrganizationType {
   Global
   Confederation
   NationalFederation
+
   @@map("organization_type")
 }
 
 enum TeamType {
   Club
   National
+
   @@map("team_type")
 }
 
@@ -32,6 +35,7 @@ enum Gender {
   Men
   Women
   Mixed
+
   @@map("gender")
 }
 
@@ -39,6 +43,7 @@ enum SurfaceType {
   Grass
   Artificial
   Hybrid
+
   @@map("surface_type")
 }
 
@@ -46,6 +51,7 @@ enum FootPreference {
   Left
   Right
   Both
+
   @@map("foot_preference")
 }
 
@@ -58,6 +64,7 @@ enum EntityTypeEnum {
   Competition
   Edition
   Match
+
   @@map("entity_type_enum")
 }
 
@@ -69,6 +76,7 @@ enum AgeLevel {
   U19
   U17
   U15
+
   @@map("age_level")
 }
 
@@ -78,6 +86,7 @@ enum StageType {
   League
   Swiss
   Qualification
+
   @@map("stage_type")
 }
 
@@ -89,6 +98,7 @@ enum TieBreakerRuleType {
   FairPlay
   Playoff
   DrawingOfLots
+
   @@map("tie_breaker_rule_type")
 }
 
@@ -99,6 +109,7 @@ enum StandingStatus {
   Qualified
   Eliminated
   Champion
+
   @@map("standing_status")
 }
 
@@ -113,6 +124,7 @@ enum CareerRole {
   President
   Chairman
   Owner
+
   @@map("career_role")
 }
 
@@ -124,6 +136,7 @@ enum EmploymentStatus {
   Amateur
   YouthAcademy
   Honorary
+
   @@map("employment_status")
 }
 
@@ -137,6 +150,7 @@ enum PersonRelationshipType {
   Mentor
   Teacher
   Other
+
   @@map("person_relationship_type")
 }
 
@@ -147,6 +161,7 @@ enum TeamRelationshipType {
   FarmTeam
   MultiClubOwnership
   Partnership
+
   @@map("team_relationship_type")
 }
 
@@ -158,6 +173,7 @@ enum LineageChangeType {
   SuccessorClub
   PhoenixClub
   Dissolution
+
   @@map("lineage_change_type")
 }
 
@@ -166,6 +182,7 @@ enum FixtureStatus {
   Postponed
   Cancelled
   Completed
+
   @@map("fixture_status")
 }
 
@@ -174,6 +191,7 @@ enum MatchStatus {
   Completed
   Abandoned
   Awarded
+
   @@map("match_status")
 }
 
@@ -183,6 +201,7 @@ enum OfficialRole {
   FourthOfficial
   VAR
   AVAR
+
   @@map("official_role")
 }
 
@@ -205,6 +224,7 @@ enum MatchEventType {
   PenaltyShootoutStart
   PenaltyKick
   PenaltyShootoutEnd
+
   @@map("match_event_type")
 }
 
@@ -213,6 +233,7 @@ enum RosterRole {
   Manager
   Coach
   Staff
+
   @@map("roster_role")
 }
 
@@ -221,23 +242,23 @@ enum PlayerPosition {
   DEF
   MID
   FWD
+
   @@map("player_position")
 }
 
-
 model GeopoliticalEntity {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   typeCode    GeopoliticalType @map("type_code")
-  primaryName String    @map("primary_name") @db.VarChar(100)
-  isoCode     String?   @map("iso_code") @db.VarChar(3)
-  fifaCode    String?   @map("fifa_code") @db.VarChar(3)
-  validFrom   DateTime  @map("valid_from") @db.Date
-  validTo     DateTime? @map("valid_to") @db.Date
-  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version     Int       @default(1)
-  deletedAt   DateTime? @map("deleted_at") @db.Timestamptz
-  createdBy   String?   @map("created_by") @db.Uuid
+  primaryName String           @map("primary_name") @db.VarChar(100)
+  isoCode     String?          @map("iso_code") @db.VarChar(3)
+  fifaCode    String?          @map("fifa_code") @db.VarChar(3)
+  validFrom   DateTime         @map("valid_from") @db.Date
+  validTo     DateTime?        @map("valid_to") @db.Date
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version     Int              @default(1)
+  deletedAt   DateTime?        @map("deleted_at") @db.Timestamptz
+  createdBy   String?          @map("created_by") @db.Uuid
 
   organizations Organization[]
   venues        Venue[]
@@ -253,25 +274,25 @@ model GeopoliticalEntity {
 }
 
 model Organization {
-  id              String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  primaryName     String           @map("primary_name") @db.VarChar(200)
-  abbreviation    String           @map("abbreviation") @db.VarChar(20)
-  orgType         OrganizationType @map("org_type")
-  geopoliticalId  String?          @map("geopolitical_id") @db.Uuid
+  id              String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  primaryName     String              @map("primary_name") @db.VarChar(200)
+  abbreviation    String              @map("abbreviation") @db.VarChar(20)
+  orgType         OrganizationType    @map("org_type")
+  geopoliticalId  String?             @map("geopolitical_id") @db.Uuid
   geopolitical    GeopoliticalEntity? @relation(fields: [geopoliticalId], references: [id], onDelete: Restrict)
-  foundationYear  Int              @map("foundation_year") @db.SmallInt
-  foundationMonth Int?             @map("foundation_month") @db.SmallInt
-  foundationDay   Int?             @map("foundation_day") @db.SmallInt
-  createdAt       DateTime         @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt       DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version         Int              @default(1)
-  deletedAt       DateTime?        @map("deleted_at") @db.Timestamptz
-  createdBy       String?          @map("created_by") @db.Uuid
+  foundationYear  Int                 @map("foundation_year") @db.SmallInt
+  foundationMonth Int?                @map("foundation_month") @db.SmallInt
+  foundationDay   Int?                @map("foundation_day") @db.SmallInt
+  createdAt       DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version         Int                 @default(1)
+  deletedAt       DateTime?           @map("deleted_at") @db.Timestamptz
+  createdBy       String?             @map("created_by") @db.Uuid
 
-  teams           Team[]
-  competitions    Competition[]
-  awards          Award[]
-  records         Record[]
+  teams        Team[]
+  competitions Competition[]
+  awards       Award[]
+  records      Record[]
 
   @@index([geopoliticalId])
   @@index([deletedAt])
@@ -279,22 +300,24 @@ model Organization {
 }
 
 model Venue {
-  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  primaryName    String             @map("primary_name") @db.VarChar(150)
-  geopoliticalId String?            @map("geopolitical_id") @db.Uuid
+  id             String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  primaryName    String              @map("primary_name") @db.VarChar(150)
+  geopoliticalId String?             @map("geopolitical_id") @db.Uuid
   geopolitical   GeopoliticalEntity? @relation(fields: [geopoliticalId], references: [id], onDelete: Restrict)
-  city           String             @map("city") @db.VarChar(100)
-  latitude       Decimal?           @map("latitude") @db.Decimal(9, 6)
-  longitude      Decimal?           @map("longitude") @db.Decimal(9, 6)
-  capacity       Int?               @map("capacity") @db.Integer
-  surface        SurfaceType        @default(Grass) @map("surface")
-  validFrom      DateTime           @map("valid_from") @db.Date
-  validTo        DateTime?          @map("valid_to") @db.Date
-  createdAt      DateTime           @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt      DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version        Int                @default(1)
-  deletedAt      DateTime?          @map("deleted_at") @db.Timestamptz
-  createdBy      String?            @map("created_by") @db.Uuid
+  city           String              @map("city") @db.VarChar(100)
+  latitude       Decimal?            @map("latitude") @db.Decimal(9, 6)
+  longitude      Decimal?            @map("longitude") @db.Decimal(9, 6)
+  capacity       Int?                @map("capacity") @db.Integer
+  surface        SurfaceType         @default(Grass) @map("surface")
+  validFrom      DateTime            @map("valid_from") @db.Date
+  validTo        DateTime?           @map("valid_to") @db.Date
+  createdAt      DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt      DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version        Int                 @default(1)
+  deletedAt      DateTime?           @map("deleted_at") @db.Timestamptz
+  createdBy      String?             @map("created_by") @db.Uuid
+  FixtureEvent   FixtureEvent[]
+  Match          Match[]
 
   @@index([geopoliticalId])
   @@index([validFrom, validTo])
@@ -324,19 +347,19 @@ model Team {
   deletedAt               DateTime?          @map("deleted_at") @db.Timestamptz
   createdBy               String?            @map("created_by") @db.Uuid
 
-  standingTables               StandingTable[]
-  rosters                      Roster[]
-  homeFixtures                 FixtureEvent[]             @relation("HomeFixture")
-  awayFixtures                 FixtureEvent[]             @relation("AwayFixture")
-  homeMatches                  Match[]                    @relation("HomeMatch")
-  awayMatches                  Match[]                    @relation("AwayMatch")
-  matchAppearances             MatchAppearance[]
-  matchEvents                  MatchEvent[]
-  careerAssociations           CareerAssociation[]
-  teamRelationships            TeamRelationship[]         @relation("TeamRelA")
-  relatedTeamRelationships     TeamRelationship[]         @relation("TeamRelB")
-  lineageNodes                 InstitutionalLineageNode[] @relation("LineageTeam")
-  predecessorNodes             InstitutionalLineageNode[] @relation("LineagePredecessor")
+  standingTables           StandingTable[]
+  rosters                  Roster[]
+  homeFixtures             FixtureEvent[]             @relation("HomeFixture")
+  awayFixtures             FixtureEvent[]             @relation("AwayFixture")
+  homeMatches              Match[]                    @relation("HomeMatch")
+  awayMatches              Match[]                    @relation("AwayMatch")
+  matchAppearances         MatchAppearance[]
+  matchEvents              MatchEvent[]
+  careerAssociations       CareerAssociation[]
+  teamRelationships        TeamRelationship[]         @relation("TeamRelA")
+  relatedTeamRelationships TeamRelationship[]         @relation("TeamRelB")
+  lineageNodes             InstitutionalLineageNode[] @relation("LineageTeam")
+  predecessorNodes         InstitutionalLineageNode[] @relation("LineagePredecessor")
 
   @@index([governingOrganizationId])
   @@index([geopoliticalId])
@@ -345,33 +368,33 @@ model Team {
 }
 
 model Person {
-  id                  String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  primaryName         String             @map("primary_name") @db.VarChar(200)
-  birthYear           Int                @map("birth_year") @db.SmallInt
-  birthMonth          Int?               @map("birth_month") @db.SmallInt
-  birthDay            Int?               @map("birth_day") @db.SmallInt
-  birthGeopoliticalId String?            @map("birth_geopolitical_id") @db.Uuid
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  primaryName         String              @map("primary_name") @db.VarChar(200)
+  birthYear           Int                 @map("birth_year") @db.SmallInt
+  birthMonth          Int?                @map("birth_month") @db.SmallInt
+  birthDay            Int?                @map("birth_day") @db.SmallInt
+  birthGeopoliticalId String?             @map("birth_geopolitical_id") @db.Uuid
   birthGeopolitical   GeopoliticalEntity? @relation("PersonBirthGeo", fields: [birthGeopoliticalId], references: [id], onDelete: Restrict)
-  birthCity           String?            @map("birth_city") @db.VarChar(100)
-  deathYear           Int?               @map("death_year") @db.SmallInt
-  deathMonth          Int?               @map("death_month") @db.SmallInt
-  deathDay            Int?               @map("death_day") @db.SmallInt
-  heightCm            Int?               @map("height_cm") @db.SmallInt
-  preferredFoot       FootPreference?    @map("preferred_foot")
-  createdAt           DateTime           @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt           DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version             Int                @default(1)
-  deletedAt           DateTime?          @map("deleted_at") @db.Timestamptz
-  createdBy           String?            @map("created_by") @db.Uuid
+  birthCity           String?             @map("birth_city") @db.VarChar(100)
+  deathYear           Int?                @map("death_year") @db.SmallInt
+  deathMonth          Int?                @map("death_month") @db.SmallInt
+  deathDay            Int?                @map("death_day") @db.SmallInt
+  heightCm            Int?                @map("height_cm") @db.SmallInt
+  preferredFoot       FootPreference?     @map("preferred_foot")
+  createdAt           DateTime            @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt           DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version             Int                 @default(1)
+  deletedAt           DateTime?           @map("deleted_at") @db.Timestamptz
+  createdBy           String?             @map("created_by") @db.Uuid
 
-  rosters                      Roster[]
-  matchAppearances             MatchAppearance[]
-  matchOfficialAssignments     MatchOfficialAssignment[]
-  matchEventsActor             MatchEvent[]               @relation("EventActor")
-  matchEventsRelated           MatchEvent[]               @relation("EventRelated")
-  careerAssociations           CareerAssociation[]
-  personRelationships          PersonRelationship[]       @relation("PersonRelA")
-  relatedPersonRelationships   PersonRelationship[]       @relation("PersonRelB")
+  rosters                    Roster[]
+  matchAppearances           MatchAppearance[]
+  matchOfficialAssignments   MatchOfficialAssignment[]
+  matchEventsActor           MatchEvent[]              @relation("EventActor")
+  matchEventsRelated         MatchEvent[]              @relation("EventRelated")
+  careerAssociations         CareerAssociation[]
+  personRelationships        PersonRelationship[]      @relation("PersonRelA")
+  relatedPersonRelationships PersonRelationship[]      @relation("PersonRelB")
 
   @@index([birthGeopoliticalId])
   @@index([deletedAt])
@@ -379,17 +402,17 @@ model Person {
 }
 
 model Alias {
-  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  entityType  EntityTypeEnum @map("entity_type")
-  entityId    String         @map("entity_id") @db.Uuid
-  aliasValue  String         @map("alias_value") @db.VarChar(100)
-  validFrom   DateTime?      @map("valid_from") @db.Date
-  validTo     DateTime?      @map("valid_to") @db.Date
-  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version     Int            @default(1)
-  deletedAt   DateTime?      @map("deleted_at") @db.Timestamptz
-  createdBy   String?        @map("created_by") @db.Uuid
+  id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  entityType EntityTypeEnum @map("entity_type")
+  entityId   String         @map("entity_id") @db.Uuid
+  aliasValue String         @map("alias_value") @db.VarChar(100)
+  validFrom  DateTime?      @map("valid_from") @db.Date
+  validTo    DateTime?      @map("valid_to") @db.Date
+  createdAt  DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version    Int            @default(1)
+  deletedAt  DateTime?      @map("deleted_at") @db.Timestamptz
+  createdBy  String?        @map("created_by") @db.Uuid
 
   @@index([entityType, entityId])
   @@index([aliasValue])
@@ -434,9 +457,9 @@ model Competition {
   deletedAt               DateTime?    @map("deleted_at") @db.Timestamptz
   createdBy               String?      @map("created_by") @db.Uuid
 
-  editions                Edition[]
-  awards                  Award[]
-  records                 Record[]
+  editions Edition[]
+  awards   Award[]
+  records  Record[]
 
   @@index([governingOrganizationId])
   @@index([deletedAt])
@@ -454,7 +477,7 @@ model Season {
   deletedAt   DateTime? @map("deleted_at") @db.Timestamptz
   createdBy   String?   @map("created_by") @db.Uuid
 
-  editions      Edition[]
+  editions        Edition[]
   awardRecipients AwardRecipient[]
 
   @@index([startYear, endYear])
@@ -479,10 +502,10 @@ model Edition {
   deletedAt          DateTime?           @map("deleted_at") @db.Timestamptz
   createdBy          String?             @map("created_by") @db.Uuid
 
-  stages             Stage[]
-  rosters            Roster[]
-  awardRecipients    AwardRecipient[]
-  recordHolders      RecordHolder[]
+  stages          Stage[]
+  rosters         Roster[]
+  awardRecipients AwardRecipient[]
+  recordHolders   RecordHolder[]
 
   @@index([competitionId])
   @@index([seasonId])
@@ -507,6 +530,7 @@ model Stage {
 
   tieBreakerRules TieBreakerRule[]
   standingTables  StandingTable[]
+  FixtureEvent    FixtureEvent[]
 
   @@index([editionId])
   @@index([deletedAt])
@@ -532,29 +556,29 @@ model TieBreakerRule {
 }
 
 model StandingTable {
-  id               String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  stageId          String          @map("stage_id") @db.Uuid
-  stage            Stage           @relation(fields: [stageId], references: [id], onDelete: Cascade)
-  teamId           String          @map("team_id") @db.Uuid
-  team             Team            @relation(fields: [teamId], references: [id], onDelete: Restrict)
-  matchweek        Int?            @map("matchweek") @db.SmallInt
-  snapshotDate     DateTime        @map("snapshot_date") @db.Date
-  position         Int             @map("position") @db.SmallInt
-  played           Int             @default(0) @map("played") @db.SmallInt
-  won              Int             @default(0) @map("won") @db.SmallInt
-  drawn            Int             @default(0) @map("drawn") @db.SmallInt
-  lost             Int             @default(0) @map("lost") @db.SmallInt
-  goalsFor         Int             @default(0) @map("goals_for") @db.SmallInt
-  goalsAgainst     Int             @default(0) @map("goals_against") @db.SmallInt
-  points           Int             @default(0) @map("points") @db.SmallInt
-  pointsDeducted   Int             @default(0) @map("points_deducted") @db.SmallInt
-  deductionReason  String?         @map("deduction_reason") @db.VarChar(255)
-  status           StandingStatus? @map("status")
-  createdAt        DateTime        @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt        DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version          Int             @default(1)
-  deletedAt        DateTime?       @map("deleted_at") @db.Timestamptz
-  createdBy        String?         @map("created_by") @db.Uuid
+  id              String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  stageId         String          @map("stage_id") @db.Uuid
+  stage           Stage           @relation(fields: [stageId], references: [id], onDelete: Cascade)
+  teamId          String          @map("team_id") @db.Uuid
+  team            Team            @relation(fields: [teamId], references: [id], onDelete: Restrict)
+  matchweek       Int?            @map("matchweek") @db.SmallInt
+  snapshotDate    DateTime        @map("snapshot_date") @db.Date
+  position        Int             @map("position") @db.SmallInt
+  played          Int             @default(0) @map("played") @db.SmallInt
+  won             Int             @default(0) @map("won") @db.SmallInt
+  drawn           Int             @default(0) @map("drawn") @db.SmallInt
+  lost            Int             @default(0) @map("lost") @db.SmallInt
+  goalsFor        Int             @default(0) @map("goals_for") @db.SmallInt
+  goalsAgainst    Int             @default(0) @map("goals_against") @db.SmallInt
+  points          Int             @default(0) @map("points") @db.SmallInt
+  pointsDeducted  Int             @default(0) @map("points_deducted") @db.SmallInt
+  deductionReason String?         @map("deduction_reason") @db.VarChar(255)
+  status          StandingStatus? @map("status")
+  createdAt       DateTime        @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt       DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version         Int             @default(1)
+  deletedAt       DateTime?       @map("deleted_at") @db.Timestamptz
+  createdBy       String?         @map("created_by") @db.Uuid
 
   @@unique([stageId, teamId, matchweek, snapshotDate], name: "idx_unique_standing_snapshot")
   @@index([stageId])
@@ -564,23 +588,22 @@ model StandingTable {
   @@map("standing_tables")
 }
 
-
 model Roster {
-  id           String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  editionId    String      @map("edition_id") @db.Uuid
-  edition      Edition     @relation(fields: [editionId], references: [id], onDelete: Cascade)
-  teamId       String      @map("team_id") @db.Uuid
-  team         Team        @relation(fields: [teamId], references: [id], onDelete: Restrict)
-  personId     String      @map("person_id") @db.Uuid
-  person       Person      @relation(fields: [personId], references: [id], onDelete: Restrict)
-  shirtNumber  Int?        @map("shirt_number") @db.SmallInt
-  role         RosterRole  @default(Player) @map("role")
-  position     PlayerPosition? @map("position")
-  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt    DateTime    @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version      Int         @default(1)
-  deletedAt    DateTime?   @map("deleted_at") @db.Timestamptz
-  createdBy    String?     @map("created_by") @db.Uuid
+  id          String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  editionId   String          @map("edition_id") @db.Uuid
+  edition     Edition         @relation(fields: [editionId], references: [id], onDelete: Cascade)
+  teamId      String          @map("team_id") @db.Uuid
+  team        Team            @relation(fields: [teamId], references: [id], onDelete: Restrict)
+  personId    String          @map("person_id") @db.Uuid
+  person      Person          @relation(fields: [personId], references: [id], onDelete: Restrict)
+  shirtNumber Int?            @map("shirt_number") @db.SmallInt
+  role        RosterRole      @default(Player) @map("role")
+  position    PlayerPosition? @map("position")
+  createdAt   DateTime        @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime        @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version     Int             @default(1)
+  deletedAt   DateTime?       @map("deleted_at") @db.Timestamptz
+  createdBy   String?         @map("created_by") @db.Uuid
 
   @@unique([editionId, teamId, personId], name: "unique_roster_member")
   @@index([editionId])
@@ -591,24 +614,24 @@ model Roster {
 }
 
 model FixtureEvent {
-  id            String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  stageId       String?        @map("stage_id") @db.Uuid
-  stage         Stage?         @relation(fields: [stageId], references: [id], onDelete: Restrict)
-  homeTeamId    String?        @map("home_team_id") @db.Uuid
-  homeTeam      Team?          @relation("HomeFixture", fields: [homeTeamId], references: [id], onDelete: Restrict)
-  awayTeamId    String?        @map("away_team_id") @db.Uuid
-  awayTeam      Team?          @relation("AwayFixture", fields: [awayTeamId], references: [id], onDelete: Restrict)
-  venueId       String?        @map("venue_id") @db.Uuid
-  venue         Venue?         @relation(fields: [venueId], references: [id], onDelete: Restrict)
-  scheduledTime DateTime?      @map("scheduled_time") @db.Timestamptz
-  status        FixtureStatus  @default(Scheduled) @map("status")
-  createdAt     DateTime       @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt     DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version       Int            @default(1)
-  deletedAt     DateTime?      @map("deleted_at") @db.Timestamptz
-  createdBy     String?        @map("created_by") @db.Uuid
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  stageId       String?       @map("stage_id") @db.Uuid
+  stage         Stage?        @relation(fields: [stageId], references: [id], onDelete: Restrict)
+  homeTeamId    String?       @map("home_team_id") @db.Uuid
+  homeTeam      Team?         @relation("HomeFixture", fields: [homeTeamId], references: [id], onDelete: Restrict)
+  awayTeamId    String?       @map("away_team_id") @db.Uuid
+  awayTeam      Team?         @relation("AwayFixture", fields: [awayTeamId], references: [id], onDelete: Restrict)
+  venueId       String?       @map("venue_id") @db.Uuid
+  venue         Venue?        @relation(fields: [venueId], references: [id], onDelete: Restrict)
+  scheduledTime DateTime?     @map("scheduled_time") @db.Timestamptz
+  status        FixtureStatus @default(Scheduled) @map("status")
+  createdAt     DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt     DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version       Int           @default(1)
+  deletedAt     DateTime?     @map("deleted_at") @db.Timestamptz
+  createdBy     String?       @map("created_by") @db.Uuid
 
-  match         Match?
+  match Match?
 
   @@index([stageId])
   @@index([homeTeamId])
@@ -619,27 +642,27 @@ model FixtureEvent {
 }
 
 model Match {
-  id               String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  fixtureEventId   String?      @unique @map("fixture_event_id") @db.Uuid
+  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fixtureEventId   String?       @unique @map("fixture_event_id") @db.Uuid
   fixtureEvent     FixtureEvent? @relation(fields: [fixtureEventId], references: [id], onDelete: Restrict)
-  homeTeamId       String       @map("home_team_id") @db.Uuid
-  homeTeam         Team         @relation("HomeMatch", fields: [homeTeamId], references: [id], onDelete: Restrict)
-  awayTeamId       String       @map("away_team_id") @db.Uuid
-  awayTeam         Team         @relation("AwayMatch", fields: [awayTeamId], references: [id], onDelete: Restrict)
-  venueId          String?      @map("venue_id") @db.Uuid
-  venue            Venue?       @relation(fields: [venueId], references: [id], onDelete: Restrict)
-  kickoffTime      DateTime?    @map("kickoff_time") @db.Timestamptz
-  homeScore        Int?         @map("home_score") @db.SmallInt
-  awayScore        Int?         @map("away_score") @db.SmallInt
-  homePenaltyScore Int?         @map("home_penalty_score") @db.SmallInt
-  awayPenaltyScore Int?         @map("away_penalty_score") @db.SmallInt
-  attendance       Int?         @map("attendance") @db.Integer
-  status           MatchStatus  @default(Completed) @map("status")
-  createdAt        DateTime     @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt        DateTime     @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version          Int          @default(1)
-  deletedAt        DateTime?    @map("deleted_at") @db.Timestamptz
-  createdBy        String?      @map("created_by") @db.Uuid
+  homeTeamId       String        @map("home_team_id") @db.Uuid
+  homeTeam         Team          @relation("HomeMatch", fields: [homeTeamId], references: [id], onDelete: Restrict)
+  awayTeamId       String        @map("away_team_id") @db.Uuid
+  awayTeam         Team          @relation("AwayMatch", fields: [awayTeamId], references: [id], onDelete: Restrict)
+  venueId          String?       @map("venue_id") @db.Uuid
+  venue            Venue?        @relation(fields: [venueId], references: [id], onDelete: Restrict)
+  kickoffTime      DateTime?     @map("kickoff_time") @db.Timestamptz
+  homeScore        Int?          @map("home_score") @db.SmallInt
+  awayScore        Int?          @map("away_score") @db.SmallInt
+  homePenaltyScore Int?          @map("home_penalty_score") @db.SmallInt
+  awayPenaltyScore Int?          @map("away_penalty_score") @db.SmallInt
+  attendance       Int?          @map("attendance") @db.Integer
+  status           MatchStatus   @default(Completed) @map("status")
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version          Int           @default(1)
+  deletedAt        DateTime?     @map("deleted_at") @db.Timestamptz
+  createdBy        String?       @map("created_by") @db.Uuid
 
   matchAppearances MatchAppearance[]
   matchOfficials   MatchOfficialAssignment[]
@@ -724,7 +747,7 @@ model MatchEvent {
   deletedAt       DateTime?      @map("deleted_at") @db.Timestamptz
   createdBy       String?        @map("created_by") @db.Uuid
 
-  factAssertions  FactAssertion[]
+  factAssertions FactAssertion[]
 
   @@index([matchId])
   @@index([teamId])
@@ -791,20 +814,20 @@ model PersonRelationship {
 }
 
 model TeamRelationship {
-  id               String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  teamId           String              @map("team_id") @db.Uuid
-  team             Team                @relation("TeamRelA", fields: [teamId], references: [id], onDelete: Restrict)
-  relatedTeamId    String              @map("related_team_id") @db.Uuid
-  relatedTeam      Team                @relation("TeamRelB", fields: [relatedTeamId], references: [id], onDelete: Restrict)
+  id               String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  teamId           String               @map("team_id") @db.Uuid
+  team             Team                 @relation("TeamRelA", fields: [teamId], references: [id], onDelete: Restrict)
+  relatedTeamId    String               @map("related_team_id") @db.Uuid
+  relatedTeam      Team                 @relation("TeamRelB", fields: [relatedTeamId], references: [id], onDelete: Restrict)
   relationshipType TeamRelationshipType @map("relationship_type")
-  validFrom        DateTime            @map("valid_from") @db.Date
-  validTo          DateTime?           @map("valid_to") @db.Date
-  notes            String?             @map("notes")
-  createdAt        DateTime            @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt        DateTime            @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version          Int                 @default(1)
-  deletedAt        DateTime?           @map("deleted_at") @db.Timestamptz
-  createdBy        String?             @map("created_by") @db.Uuid
+  validFrom        DateTime             @map("valid_from") @db.Date
+  validTo          DateTime?            @map("valid_to") @db.Date
+  notes            String?              @map("notes")
+  createdAt        DateTime             @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime             @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version          Int                  @default(1)
+  deletedAt        DateTime?            @map("deleted_at") @db.Timestamptz
+  createdBy        String?              @map("created_by") @db.Uuid
 
   @@index([teamId])
   @@index([relatedTeamId])
@@ -815,21 +838,21 @@ model TeamRelationship {
 }
 
 model InstitutionalLineageNode {
-  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  teamId            String           @map("team_id") @db.Uuid
-  team              Team             @relation("LineageTeam", fields: [teamId], references: [id], onDelete: Restrict)
-  predecessorTeamId String?          @map("predecessor_team_id") @db.Uuid
-  predecessorTeam   Team?            @relation("LineagePredecessor", fields: [predecessorTeamId], references: [id], onDelete: Restrict)
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  teamId            String            @map("team_id") @db.Uuid
+  team              Team              @relation("LineageTeam", fields: [teamId], references: [id], onDelete: Restrict)
+  predecessorTeamId String?           @map("predecessor_team_id") @db.Uuid
+  predecessorTeam   Team?             @relation("LineagePredecessor", fields: [predecessorTeamId], references: [id], onDelete: Restrict)
   changeType        LineageChangeType @map("change_type")
-  changeYear        Int              @map("change_year") @db.SmallInt
-  changeMonth       Int?             @map("change_month") @db.SmallInt
-  changeDay         Int?             @map("change_day") @db.SmallInt
-  description       String?          @map("description")
-  createdAt         DateTime         @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt         DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version           Int              @default(1)
-  deletedAt         DateTime?        @map("deleted_at") @db.Timestamptz
-  createdBy         String?          @map("created_by") @db.Uuid
+  changeYear        Int               @map("change_year") @db.SmallInt
+  changeMonth       Int?              @map("change_month") @db.SmallInt
+  changeDay         Int?              @map("change_day") @db.SmallInt
+  description       String?           @map("description")
+  createdAt         DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime          @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version           Int               @default(1)
+  deletedAt         DateTime?         @map("deleted_at") @db.Timestamptz
+  createdBy         String?           @map("created_by") @db.Uuid
 
   @@index([teamId])
   @@index([predecessorTeamId])
@@ -852,6 +875,7 @@ enum SourceDocumentType {
   Transfermarkt
   Archive
   PersonalResearch
+
   @@map("source_document_type")
 }
 
@@ -861,6 +885,7 @@ enum AssertionType {
   Corroborating
   Conflicting
   Retracted
+
   @@map("assertion_type")
 }
 
@@ -871,6 +896,7 @@ enum StagedRecordStatus {
   Merged
   Duplicate
   Error
+
   @@map("staged_record_status")
 }
 
@@ -881,6 +907,7 @@ enum ConflictResolutionStatus {
   NeedsReview
   Duplicate
   Escalated
+
   @@map("conflict_resolution_status")
 }
 
@@ -889,6 +916,7 @@ enum ConflictPriority {
   Normal
   High
   Critical
+
   @@map("conflict_priority")
 }
 
@@ -914,8 +942,8 @@ model SourceDocument {
   deletedAt        DateTime?          @map("deleted_at") @db.Timestamptz
   createdBy        String?            @map("created_by") @db.Uuid
 
-  factAssertions   FactAssertion[]
-  stagedRecords    StagedRecord[]
+  factAssertions FactAssertion[]
+  stagedRecords  StagedRecord[]
 
   @@index([docType])
   @@index([title])
@@ -927,22 +955,22 @@ model SourceDocument {
 }
 
 model FactAssertion {
-  id               String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  sourceDocumentId String        @map("source_document_id") @db.Uuid
+  id               String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  sourceDocumentId String         @map("source_document_id") @db.Uuid
   sourceDocument   SourceDocument @relation(fields: [sourceDocumentId], references: [id], onDelete: Restrict)
-  matchEventId     String?       @map("match_event_id") @db.Uuid
-  matchEvent       MatchEvent?   @relation(fields: [matchEventId], references: [id], onDelete: Restrict)
-  assertionType    AssertionType @default(Primary) @map("assertion_type")
-  confidenceScore  Int           @default(100) @map("confidence_score") @db.SmallInt
-  assertionTime    DateTime      @default(now()) @map("assertion_time") @db.Timestamptz
-  reviewerId       String?       @map("reviewer_id") @db.Uuid
-  verificationDate DateTime?     @map("verification_date") @db.Date
-  notes            String?       @map("notes")
-  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt        DateTime      @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version          Int           @default(1)
-  deletedAt        DateTime?     @map("deleted_at") @db.Timestamptz
-  createdBy        String?       @map("created_by") @db.Uuid
+  matchEventId     String?        @map("match_event_id") @db.Uuid
+  matchEvent       MatchEvent?    @relation(fields: [matchEventId], references: [id], onDelete: Restrict)
+  assertionType    AssertionType  @default(Primary) @map("assertion_type")
+  confidenceScore  Int            @default(100) @map("confidence_score") @db.SmallInt
+  assertionTime    DateTime       @default(now()) @map("assertion_time") @db.Timestamptz
+  reviewerId       String?        @map("reviewer_id") @db.Uuid
+  verificationDate DateTime?      @map("verification_date") @db.Date
+  notes            String?        @map("notes")
+  createdAt        DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime       @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version          Int            @default(1)
+  deletedAt        DateTime?      @map("deleted_at") @db.Timestamptz
+  createdBy        String?        @map("created_by") @db.Uuid
 
   @@index([sourceDocumentId])
   @@index([matchEventId])
@@ -955,23 +983,23 @@ model FactAssertion {
 }
 
 model StagedRecord {
-  id                String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  importBatchId     String             @map("import_batch_id") @db.Uuid
-  sourceDocumentId  String?            @map("source_document_id") @db.Uuid
-  sourceDocument    SourceDocument?    @relation(fields: [sourceDocumentId], references: [id], onDelete: Restrict)
-  sourceFile        String?            @map("source_file") @db.VarChar(1000)
-  rawPayload        Json               @map("raw_payload")
-  processingStatus  StagedRecordStatus @default(Pending) @map("processing_status")
-  validationErrors  Json?              @map("validation_errors")
-  importedAt        DateTime           @default(now()) @map("imported_at") @db.Timestamptz
-  parserVersion     String?            @map("parser_version") @db.VarChar(50)
-  createdAt         DateTime           @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt         DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version           Int                @default(1)
-  deletedAt         DateTime?          @map("deleted_at") @db.Timestamptz
-  createdBy         String?            @map("created_by") @db.Uuid
+  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  importBatchId    String             @map("import_batch_id") @db.Uuid
+  sourceDocumentId String?            @map("source_document_id") @db.Uuid
+  sourceDocument   SourceDocument?    @relation(fields: [sourceDocumentId], references: [id], onDelete: Restrict)
+  sourceFile       String?            @map("source_file") @db.VarChar(1000)
+  rawPayload       Json               @map("raw_payload")
+  processingStatus StagedRecordStatus @default(Pending) @map("processing_status")
+  validationErrors Json?              @map("validation_errors")
+  importedAt       DateTime           @default(now()) @map("imported_at") @db.Timestamptz
+  parserVersion    String?            @map("parser_version") @db.VarChar(50)
+  createdAt        DateTime           @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt        DateTime           @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version          Int                @default(1)
+  deletedAt        DateTime?          @map("deleted_at") @db.Timestamptz
+  createdBy        String?            @map("created_by") @db.Uuid
 
-  conflictTask      ConflictResolutionTask?
+  conflictTask ConflictResolutionTask?
 
   @@index([importBatchId])
   @@index([sourceDocumentId])
@@ -1015,6 +1043,7 @@ enum MediaEntityType {
   Match
   Venue
   SourceDocument
+
   @@map("media_entity_type")
 }
 
@@ -1026,6 +1055,7 @@ enum MediaAssetType {
   Document
   SVG
   ExternalLink
+
   @@map("media_asset_type")
 }
 
@@ -1034,6 +1064,7 @@ enum StorageProvider {
   S3
   CloudStorage
   CDN
+
   @@map("storage_provider")
 }
 
@@ -1042,6 +1073,7 @@ enum MediaVisibility {
   Internal
   Restricted
   Private
+
   @@map("media_visibility")
 }
 
@@ -1050,6 +1082,7 @@ enum OcrStatus {
   Pending
   Completed
   Failed
+
   @@map("ocr_status")
 }
 
@@ -1058,81 +1091,82 @@ enum ImageVariant {
   Medium
   Original
   Retina
+
   @@map("image_variant")
 }
 
 model MediaAsset {
-  id                  String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
 
   // Polymorphic association
-  entityType          MediaEntityType  @map("entity_type")
-  entityId            String           @map("entity_id") @db.Uuid
+  entityType MediaEntityType @map("entity_type")
+  entityId   String          @map("entity_id") @db.Uuid
 
   // Classification
-  assetType           MediaAssetType   @map("asset_type")
-  mimeType            String           @map("mime_type") @db.VarChar(100)
+  assetType MediaAssetType @map("asset_type")
+  mimeType  String         @map("mime_type") @db.VarChar(100)
 
   // File metadata
-  fileName            String           @map("file_name") @db.VarChar(500)
-  originalFileName    String           @map("original_file_name") @db.VarChar(500)
-  fileSizeBytes       BigInt?          @map("file_size_bytes")
-  checksum            String?          @map("checksum") @db.VarChar(128)
+  fileName         String  @map("file_name") @db.VarChar(500)
+  originalFileName String  @map("original_file_name") @db.VarChar(500)
+  fileSizeBytes    BigInt? @map("file_size_bytes")
+  checksum         String? @map("checksum") @db.VarChar(128)
 
   // Storage
-  storageProvider     StorageProvider  @default(S3) @map("storage_provider")
-  storagePath         String           @map("storage_path") @db.VarChar(2000)
-  cdnUrl              String?          @map("cdn_url") @db.VarChar(2000)
-  externalUrl         String?          @map("external_url") @db.VarChar(2000)
+  storageProvider StorageProvider @default(S3) @map("storage_provider")
+  storagePath     String          @map("storage_path") @db.VarChar(2000)
+  cdnUrl          String?         @map("cdn_url") @db.VarChar(2000)
+  externalUrl     String?         @map("external_url") @db.VarChar(2000)
 
   // Image dimensions
-  widthPx             Int?             @map("width_px") @db.Integer
-  heightPx            Int?             @map("height_px") @db.Integer
-  imageVariant        ImageVariant?    @map("image_variant")
-  cropInfo            Json?            @map("crop_info")
+  widthPx      Int?          @map("width_px") @db.Integer
+  heightPx     Int?          @map("height_px") @db.Integer
+  imageVariant ImageVariant? @map("image_variant")
+  cropInfo     Json?         @map("crop_info")
 
   // Video metadata
-  durationSeconds     Decimal?         @map("duration_seconds") @db.Decimal(12, 3)
-  resolutionLabel     String?          @map("resolution_label") @db.VarChar(20)
-  frameRate           Decimal?         @map("frame_rate") @db.Decimal(6, 3)
-  codec               String?          @map("codec") @db.VarChar(50)
-  videoThumbnailPath  String?          @map("video_thumbnail_path") @db.VarChar(2000)
+  durationSeconds    Decimal? @map("duration_seconds") @db.Decimal(12, 3)
+  resolutionLabel    String?  @map("resolution_label") @db.VarChar(20)
+  frameRate          Decimal? @map("frame_rate") @db.Decimal(6, 3)
+  codec              String?  @map("codec") @db.VarChar(50)
+  videoThumbnailPath String?  @map("video_thumbnail_path") @db.VarChar(2000)
 
   // Document metadata
-  pageCount           Int?             @map("page_count") @db.SmallInt
-  ocrStatus           OcrStatus        @default(NotApplicable) @map("ocr_status")
-  isSearchable        Boolean          @default(false) @map("is_searchable")
+  pageCount    Int?      @map("page_count") @db.SmallInt
+  ocrStatus    OcrStatus @default(NotApplicable) @map("ocr_status")
+  isSearchable Boolean   @default(false) @map("is_searchable")
 
   // Descriptive metadata
-  altText             String?          @map("alt_text") @db.VarChar(500)
-  caption             String?          @map("caption")
-  description         String?          @map("description")
-  language            String?          @default("en") @map("language") @db.VarChar(10)
+  altText     String? @map("alt_text") @db.VarChar(500)
+  caption     String? @map("caption")
+  description String? @map("description")
+  language    String? @default("en") @map("language") @db.VarChar(10)
 
   // Attribution
-  photographer        String?          @map("photographer") @db.VarChar(200)
-  copyright           String?          @map("copyright") @db.VarChar(500)
-  copyrightOwner      String?          @map("copyright_owner") @db.VarChar(200)
-  license             String?          @map("license") @db.VarChar(200)
+  photographer   String? @map("photographer") @db.VarChar(200)
+  copyright      String? @map("copyright") @db.VarChar(500)
+  copyrightOwner String? @map("copyright_owner") @db.VarChar(200)
+  license        String? @map("license") @db.VarChar(200)
 
   // Valid time (when the media was originally captured)
-  validFrom           DateTime?        @map("valid_from") @db.Date
-  validTo             DateTime?        @map("valid_to") @db.Date
+  validFrom DateTime? @map("valid_from") @db.Date
+  validTo   DateTime? @map("valid_to") @db.Date
 
   // Display
-  visibility          MediaVisibility  @default(Public) @map("visibility")
-  isPrimary           Boolean          @default(false) @map("is_primary")
-  displayOrder        Int              @default(0) @map("display_order") @db.SmallInt
+  visibility   MediaVisibility @default(Public) @map("visibility")
+  isPrimary    Boolean         @default(false) @map("is_primary")
+  displayOrder Int             @default(0) @map("display_order") @db.SmallInt
 
   // Upload tracking
-  uploadSource        String?          @map("upload_source") @db.VarChar(200)
-  uploadedBy          String?          @map("uploaded_by") @db.Uuid
+  uploadSource String? @map("upload_source") @db.VarChar(200)
+  uploadedBy   String? @map("uploaded_by") @db.Uuid
 
   // Timestamps
-  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt           DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version             Int              @default(1)
-  deletedAt           DateTime?        @map("deleted_at") @db.Timestamptz
-  createdBy           String?          @map("created_by") @db.Uuid
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version   Int       @default(1)
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz
+  createdBy String?   @map("created_by") @db.Uuid
 
   @@index([entityType, entityId])
   @@index([entityType, entityId, isPrimary])
@@ -1156,6 +1190,7 @@ enum AwardCategory {
   FairPlay
   Coaching
   Special
+
   @@map("award_category")
 }
 
@@ -1165,6 +1200,7 @@ enum AwardSubjectType {
   Organization
   Competition
   Match
+
   @@map("award_subject_type")
 }
 
@@ -1172,6 +1208,7 @@ enum AwardRecipientType {
   Person
   Team
   Organization
+
   @@map("award_recipient_type")
 }
 
@@ -1182,6 +1219,7 @@ enum RecordCategory {
   Match
   Venue
   Historical
+
   @@map("record_category")
 }
 
@@ -1194,6 +1232,7 @@ enum RecordMeasurementType {
   Percentage
   Currency
   Other
+
   @@map("record_measurement_type")
 }
 
@@ -1203,6 +1242,7 @@ enum RecordVerificationStatus {
   Verified
   Disputed
   Retracted
+
   @@map("record_verification_status")
 }
 
@@ -1210,6 +1250,7 @@ enum RecordHolderType {
   Person
   Team
   Organization
+
   @@map("record_holder_type")
 }
 
@@ -1232,7 +1273,7 @@ model Award {
   deletedAt               DateTime?        @map("deleted_at") @db.Timestamptz
   createdBy               String?          @map("created_by") @db.Uuid
 
-  recipients              AwardRecipient[]
+  recipients AwardRecipient[]
 
   @@index([category])
   @@index([subjectType])
@@ -1298,7 +1339,7 @@ model Record {
   deletedAt               DateTime?                @map("deleted_at") @db.Timestamptz
   createdBy               String?                  @map("created_by") @db.Uuid
 
-  holders                 RecordHolder[]
+  holders RecordHolder[]
 
   @@index([category])
   @@index([measurementType])
@@ -1311,29 +1352,29 @@ model Record {
 }
 
 model RecordHolder {
-  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  recordId    String           @map("record_id") @db.Uuid
-  record      Record           @relation(fields: [recordId], references: [id], onDelete: Restrict)
-  holderType  RecordHolderType @map("holder_type")
-  holderId    String           @map("holder_id") @db.Uuid
-  startYear   Int?             @map("start_year") @db.SmallInt
-  startMonth  Int?             @map("start_month") @db.SmallInt
-  startDay    Int?             @map("start_day") @db.SmallInt
-  endYear     Int?             @map("end_year") @db.SmallInt
-  endMonth    Int?             @map("end_month") @db.SmallInt
-  endDay      Int?             @map("end_day") @db.SmallInt
-  isCurrent   Boolean          @default(false) @map("is_current")
-  isShared    Boolean          @default(false) @map("is_shared")
-  editionId   String?          @map("edition_id") @db.Uuid
-  edition     Edition?         @relation(fields: [editionId], references: [id], onDelete: Restrict)
-  matchId     String?          @map("match_id") @db.Uuid
-  match       Match?           @relation(fields: [matchId], references: [id], onDelete: Restrict)
-  notes       String?          @map("notes")
-  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz
-  updatedAt   DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
-  version     Int              @default(1)
-  deletedAt   DateTime?        @map("deleted_at") @db.Timestamptz
-  createdBy   String?          @map("created_by") @db.Uuid
+  id         String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  recordId   String           @map("record_id") @db.Uuid
+  record     Record           @relation(fields: [recordId], references: [id], onDelete: Restrict)
+  holderType RecordHolderType @map("holder_type")
+  holderId   String           @map("holder_id") @db.Uuid
+  startYear  Int?             @map("start_year") @db.SmallInt
+  startMonth Int?             @map("start_month") @db.SmallInt
+  startDay   Int?             @map("start_day") @db.SmallInt
+  endYear    Int?             @map("end_year") @db.SmallInt
+  endMonth   Int?             @map("end_month") @db.SmallInt
+  endDay     Int?             @map("end_day") @db.SmallInt
+  isCurrent  Boolean          @default(false) @map("is_current")
+  isShared   Boolean          @default(false) @map("is_shared")
+  editionId  String?          @map("edition_id") @db.Uuid
+  edition    Edition?         @relation(fields: [editionId], references: [id], onDelete: Restrict)
+  matchId    String?          @map("match_id") @db.Uuid
+  match      Match?           @relation(fields: [matchId], references: [id], onDelete: Restrict)
+  notes      String?          @map("notes")
+  createdAt  DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt  DateTime         @default(now()) @updatedAt @map("updated_at") @db.Timestamptz
+  version    Int              @default(1)
+  deletedAt  DateTime?        @map("deleted_at") @db.Timestamptz
+  createdBy  String?          @map("created_by") @db.Uuid
 
   @@index([recordId])
   @@index([holderType, holderId])

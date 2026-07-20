@@ -1,4 +1,4 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from './app.module';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
@@ -10,6 +10,9 @@ import { Logger } from 'nestjs-pino';
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { PrismaExceptionFilter } from './common/filters/prisma-exception.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
+import { RolesGuard } from './common/guards/roles.guard';
+import { PermissionsGuard } from './common/guards/permissions.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -22,37 +25,31 @@ async function bootstrap() {
   const logger = app.get(Logger);
   app.useLogger(logger);
 
-  // Security & Performance
   await app.register(helmet);
   await app.register(compression);
   
   app.enableCors({
-    origin: '*', // Configure properly in production
+    origin: '*',
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
 
-  // Global Config
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
   app.setGlobalPrefix('api');
 
-  // Global Pipes, Filters, Interceptors
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    })
-  );
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true, transform: true }));
   
-  app.useGlobalFilters(
-    new GlobalExceptionFilter(logger),
-    new PrismaExceptionFilter(logger)
-  );
-  
+  app.useGlobalFilters(new GlobalExceptionFilter(logger), new PrismaExceptionFilter(logger));
   app.useGlobalInterceptors(new TransformInterceptor());
 
-  // Swagger
+  // Global Security Guards
+  const reflector = app.get(Reflector);
+  app.useGlobalGuards(
+    new JwtAuthGuard(reflector),
+    new RolesGuard(reflector),
+    new PermissionsGuard(reflector)
+  );
+
   const config = new DocumentBuilder()
     .setTitle('FootballDB API')
     .setDescription('The official FootballDB Backend API')
@@ -62,7 +59,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
-  // Graceful Shutdown
   app.enableShutdownHooks();
 
   const port = configService.get<number>('PORT') || 3000;

@@ -1,32 +1,21 @@
-# FootballDB
+# FootballDB Backend
 
-FootballDB is a comprehensive, enterprise-grade database and backend system designed to model, ingest, and serve historical and contemporary football (soccer) data.
+FootballDB is an enterprise-grade backend system designed to model, ingest, and serve historical and contemporary football (soccer) data.
 
 ## Features
+- **Clean Architecture:** Feature-first modules with strict dependency inversion.
+- **High Performance:** Fastify, Redis caching, and PostgreSQL optimizations.
+- **Robust Imports:** Distributed BullMQ workers for data ingestion and conflict resolution.
 
-- **Domain-Driven Design:** Models the complex reality of global football, including geopolitics, organizations, competitions, clubs, players, matches, careers, awards, and records.
-- **Immutable Historical Architecture:** Prioritizes historical integrity. Fact assertions are appended, conflicts are managed, and records are soft-deleted, ensuring history is never accidentally overwritten.
-- **Robust Import Pipeline:** A robust, queued architecture for importing data from dozens of disparate sources, parsing, normalizing, duplicate-checking, and resolving conflicts automatically or manually.
-- **Enterprise-Ready Backend:** Built on Node.js, NestJS, and TypeScript. Implements Clean Architecture, CQRS readiness, strong RBAC, and background job processing with BullMQ.
-- **Performance First:** PostgreSQL 16 foundation with materialized views, optimized indexes, and Redis caching.
+## Tech Stack
+- NestJS (Fastify)
+- TypeScript
+- PostgreSQL 16
+- Prisma ORM
+- Redis & BullMQ
 
-## Architecture
-
-Please see the `docs/` directory and root architecture documents for in-depth system designs:
-- `01-domain-architecture.md`
-- `10-import-architecture.md`
-- `11-backend-architecture.md`
-
-## Stack
-
-- **Database:** PostgreSQL 16
-- **Backend:** NestJS, TypeScript
-- **ORM:** Prisma
-- **Cache:** Redis
-- **Queues:** BullMQ
-- **Search:** pg_trgm (Phase 1) / Elasticsearch (Phase 2)
-- **Object Storage:** S3-compatible
-
-## License
-
-MIT License. See `LICENSE` for details.
+## Quick Start
+1. `npm install`
+2. `npm run docker:dev`
+3. `npm run migrate:dev`
+4. `npm run start:dev`

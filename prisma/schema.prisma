@@ -1385,3 +1385,76 @@ model RecordHolder {
   @@index([deletedAt])
   @@map("record_holders")
 }
+
+
+// -----------------------------------------------------------------------------
+// Auth & RBAC
+// -----------------------------------------------------------------------------
+
+model User {
+  id                String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email             String       @unique @db.VarChar(255)
+  passwordHash      String       @map("password_hash") @db.VarChar(255)
+  refreshTokenHash  String?      @map("refresh_token_hash") @db.VarChar(255)
+  isActive          Boolean      @default(true) @map("is_active")
+  roles             UserRole[]
+
+  version           Int          @default(1)
+  createdAt         DateTime     @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt         DateTime     @default(now()) @map("updated_at") @db.Timestamptz
+
+  @@map("users")
+}
+
+model Role {
+  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String           @unique @db.VarChar(50)
+  description String?          @db.Text
+  users       UserRole[]
+  permissions RolePermission[]
+
+  version     Int              @default(1)
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime         @default(now()) @map("updated_at") @db.Timestamptz
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  resource    String           @db.VarChar(50)
+  action      String           @db.VarChar(50)
+  description String?          @db.Text
+  roles       RolePermission[]
+
+  version     Int              @default(1)
+  createdAt   DateTime         @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime         @default(now()) @map("updated_at") @db.Timestamptz
+
+  @@unique([resource, action])
+  @@map("permissions")
+}
+
+model UserRole {
+  userId    String   @map("user_id") @db.Uuid
+  roleId    String   @map("role_id") @db.Uuid
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@id([userId, roleId])
+  @@map("user_roles")
+}
+
+model RolePermission {
+  roleId       String     @map("role_id") @db.Uuid
+  permissionId String     @map("permission_id") @db.Uuid
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  createdAt    DateTime   @default(now()) @map("created_at") @db.Timestamptz
+
+  @@id([roleId, permissionId])
+  @@map("role_permissions")
+}
